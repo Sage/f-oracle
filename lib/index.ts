@@ -1,6 +1,6 @@
 import { wait } from 'f-promise';
 import * as ez from 'f-streams';
-import { OBJECT, IConnection, IConnectionAttributes, IExecuteReturn, Lob } from 'oracledb';
+import { OBJECT, IConnection, IConnectionAttributes, IExecuteReturn, IExecuteOptions, Lob } from 'oracledb';
 const generic = ez.devices.generic;
 
 /// !doc
@@ -12,7 +12,7 @@ var active = 0;
 var tracer: any; // = console.error;
 
 /// * `reader = foracle.reader(connection, sql, [args], [opts])`  
-export function reader(connection: IConnection, sql: string, args?: any[], opts?: IConnectionAttributes) {
+export function reader(connection: IConnection, sql: string, args?: any[], opts?: IExecuteOptions) {
 	args = args || [];
 	var rd: IExecuteReturn | undefined, stopped: boolean;
 	return generic.reader(() => {
@@ -58,12 +58,12 @@ export function writer(connection: IConnection, sql: string) {
 
 export function lobReader(lob: Lob) {
 	return generic.reader(() => {
-		var data = wait(cb => lob.iLob.read && lob.iLob.read(cb));
+		var data = wait<Buffer | string>(cb => lob.iLob.read && lob.iLob.read(cb));
 		return data != null ? data : undefined;
 	});
 }
 
-export function lobWiter(lob: Lob) {
+export function lobWriter(lob: Lob) {
 	return generic.writer((data: Buffer | undefined) => {
 		if (data !== undefined) wait(cb => lob.iLob.write && lob.iLob.write(data, cb));
 		else lob.close();
