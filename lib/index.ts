@@ -1,6 +1,6 @@
 import { wait } from 'f-promise';
 import * as ez from 'f-streams';
-import { OBJECT, IConnection, IConnectionAttributes, IExecuteReturn, IExecuteOptions, Lob } from 'oracledb';
+import { OBJECT, IConnection, IExecuteReturn, IExecuteOptions, Lob } from 'oracledb';
 const generic = ez.devices.generic;
 
 /// !doc
