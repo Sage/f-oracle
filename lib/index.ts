@@ -1,7 +1,6 @@
 import { wait } from 'f-promise';
-import * as ez from 'f-streams';
+import { devices, Reader, Writer } from 'f-streams';
 import { OBJECT, IConnection, IExecuteReturn, IExecuteOptions, Lob } from 'oracledb';
-const generic = ez.devices.generic;
 
 /// !doc
 /// ## f-streams wrapper for oracle
@@ -12,20 +11,20 @@ var active = 0;
 var tracer: any; // = console.error;
 
 /// * `reader = foracle.reader(connection, sql, [args], [opts])`  
-export function reader(connection: IConnection, sql: string, args?: any[], opts?: IExecuteOptions) {
+export function reader<T>(connection: IConnection, sql: string, args?: any[], opts?: IExecuteOptions): Reader<T> {
 	args = args || [];
 	var rd: IExecuteReturn | undefined, stopped: boolean;
-	return generic.reader(() => {
+	return devices.generic.reader<T>(() => {
 		if (!rd && !stopped) {
 			tracer && tracer("READER OPEN: " + ++active + ", SQL:" + sql, args);
 			var nopts = Object.assign({
 				resultSet: true,
 				outFormat: OBJECT,
 			}, opts);
-			rd = wait(connection.execute(sql, args, nopts) as Promise<IExecuteReturn>);
+			rd = wait(connection.execute(sql, args, nopts) as Promise<IExecuteReturn | undefined>);
 		}
 		if (!rd || !rd.resultSet) return undefined;
-		var row = wait(rd.resultSet.getRow() as Promise<Object | any[]>);
+		var row = wait(rd.resultSet.getRow() as Promise<T | undefined>);
 		if (!row) {
 			wait(rd.resultSet.close() as Promise<void>);
 			tracer && tracer("READER CLOSED: " + --active)
@@ -44,10 +43,10 @@ export function reader(connection: IConnection, sql: string, args?: any[], opts?
 }
 
 /// * `writer = foracle.writer(connection, sql)`  
-export function writer(connection: IConnection, sql: string) {
+export function writer<T>(connection: IConnection, sql: string): Writer<T> {
 	var done: boolean;
 	tracer && tracer("writer initialized : " + sql);
-	return generic.writer(row => {
+	return devices.generic.writer<T>(row => {
 		if (row === undefined) { done = true; return; }
 		if (done) return;
 		var values = Array.isArray(row) ? row : Object.keys(row).map(function (key) { return (row as any)[key] });
@@ -57,14 +56,14 @@ export function writer(connection: IConnection, sql: string) {
 }
 
 export function lobReader(lob: Lob) {
-	return generic.reader(() => {
+	return devices.generic.reader(() => {
 		var data = wait<Buffer | string>(cb => lob.iLob.read && lob.iLob.read(cb));
 		return data != null ? data : undefined;
 	});
 }
 
 export function lobWriter(lob: Lob) {
-	return generic.writer((data: Buffer | undefined) => {
+	return devices.generic.writer((data: Buffer | undefined) => {
 		if (data !== undefined) wait(cb => lob.iLob.write && lob.iLob.write(data, cb));
 		else lob.close();
 	});

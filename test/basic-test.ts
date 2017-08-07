@@ -25,7 +25,11 @@ describe(module.id, () => {
 	});
 
 	it('roundtrip', function (_) {
-		const wr = writer(conn, "INSERT INTO T1 (C1, C2, C3) VALUES (:1, :2, :3)");
+		const wr = writer<{
+			C1: number;
+			C2: string;
+			C3: Buffer;
+		}>(conn, "INSERT INTO T1 (C1, C2, C3) VALUES (:1, :2, :3)");
 		const data = [{
 			C1: 4,
 			C2: "Hello",
