@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { IConnection, IConnectionAttributes, getConnection, IPromise } from 'oracledb';
 import { wait } from 'f-promise';
 import { setup } from 'f-mocha';
-import * as ez from 'f-streams';
+import { arrayReader } from 'f-streams';
 import { reader, writer } from '..';
 setup();
 
@@ -24,7 +24,7 @@ describe(module.id, () => {
 		ok(true, "connected and table created");
 	});
 
-	it('roundtrip', function (_) {
+	it('roundtrip', function () {
 		const wr = writer<{
 			C1: number;
 			C2: string;
@@ -39,7 +39,7 @@ describe(module.id, () => {
 			C2: "World",
 			C3: new Buffer("aabbccddeeff0011", "hex")
 		},];
-		ez.devices.array.reader(data).pipe(wr);
+		arrayReader(data).pipe(wr);
 		const result = reader(conn, "SELECT C1, C2, C3 FROM T1").toArray();
 		deepEqual(result, data);
 	});
