@@ -1,7 +1,7 @@
 {
   "name": "f-oracle",
   "description": "f-streams for Oracle",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "dependencies": {
     "f-promise": "^1.0.4",
     "f-streams": "^2.0.0",
-    "oracledb": "^1.11.0"
+    "oracledb": "^2.0.15"
   },
   "author": "Bruno Jouhier",
   "main": "build/index.js",
