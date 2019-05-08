@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import { IConnection, IConnectionAttributes, getConnection, IPromise } from 'oracledb';
-import { wait } from 'f-promise';
 import { setup } from 'f-mocha';
+import { wait } from 'f-promise';
 import { arrayReader } from 'f-streams';
+import { getConnection, IConnection, IConnectionAttributes, IPromise } from 'oracledb';
 import { reader, writer } from '..';
 setup();
 
@@ -15,7 +15,7 @@ describe(module.id, () => {
 	var conn: IConnection;
 
 	it('connect', function () {
-		const config: IConnectionAttributes = require('../../test/test-config');
+		const config: IConnectionAttributes = require('./test-config');
 		conn = owait(getConnection(config));
 		try {
 			owait(conn.execute('DROP TABLE T1'));
