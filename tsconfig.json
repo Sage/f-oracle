@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "declaration": true,
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "es2015",
@@ -10,8 +11,5 @@
         "noUnusedLocals": true,
         "strictNullChecks": true
     },
-    "exclude": [
-        "node_modules",
-        "build"
-    ]
+    "include": ["index.ts", "lib/**/*"]
 }
