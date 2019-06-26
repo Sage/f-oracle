@@ -5,7 +5,7 @@ This package provides [f-streams](https://github.com/Sage/f-streams) readers and
 <a name="installation"/>
 ## Installation
 
-``` sh
+```sh
 npm install f-oracle
 ```
 
