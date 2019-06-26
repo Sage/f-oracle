@@ -8,12 +8,12 @@
         "url": "git://github.com/Sage/f-oracle.git"
     },
     "engines": {
-        "node": ">=4.0.0"
+        "node": ">=8.0.0"
     },
     "dependencies": {
-        "f-promise": "^1.0.4",
-        "f-streams": "^2.0.0",
-        "oracledb": "^2.0.15"
+        "f-promise": "^2.0.3",
+        "f-streams": "^3.0.0",
+        "oracledb": "^3.1.2"
     },
     "author": "Bruno Jouhier",
     "main": "build/index.js",
@@ -23,10 +23,10 @@
         "@types/mocha": "^2.2.33",
         "@types/oracledb": "^1.11.33",
         "chai": "^3.5.0",
-        "f-mocha": "^1.0.1",
-        "mocha": "^3.2.0",
+        "f-mocha": "^2.0.0",
+        "mocha": "^6.1.4",
         "ts-mocha": "^6.0.0",
-        "typescript": "^2.0.10"
+        "typescript": "^3.5.2"
     },
     "scripts": {
         "build": "rm -rf build && tsc",
