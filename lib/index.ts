@@ -1,6 +1,6 @@
 import { wait } from 'f-promise';
 import { devices, Reader, Writer } from 'f-streams';
-import { Connection, ExecuteOptions, Lob, OUT_FORMAT_OBJECT, Result } from 'oracledb';
+import { CLOB, Connection, ExecuteOptions, Lob, OUT_FORMAT_OBJECT, Result } from 'oracledb';
 
 /// !doc
 /// ## f-streams wrapper for oracle
@@ -67,15 +67,10 @@ export function writer<T>(connection: Connection, sql: string): Writer<T> {
 }
 
 export function lobReader(lob: Lob) {
-    return devices.generic.reader(() => {
-        const data = wait(lob.getData());
-        return data != null ? data : undefined;
-    });
+    const options = lob.type === CLOB ? { encoding: 'utf8' } : {};
+    return devices.node.reader(lob, options);
 }
 
 export function lobWriter(lob: Lob) {
-    return devices.generic.writer((data: Buffer | undefined) => {
-        if (data !== undefined) wait(cb => lob.write(data, cb));
-        else lob.close();
-    });
+    return devices.node.writer(lob);
 }
