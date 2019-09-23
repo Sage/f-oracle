@@ -1,7 +1,7 @@
 {
     "name": "f-oracle",
     "description": "f-streams for Oracle",
-    "version": "4.0.3",
+    "version": "4.0.4",
     "license": "MIT",
     "repository": {
         "type": "git",
