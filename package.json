@@ -21,7 +21,7 @@
     "devDependencies": {
         "@types/chai": "^3.4.34",
         "@types/mocha": "^2.2.33",
-        "@types/oracledb": "^1.11.33",
+        "@types/oracledb": "^4.0.3",
         "chai": "^3.5.0",
         "f-mocha": "^2.0.0",
         "mocha": "^6.1.4",
@@ -30,8 +30,7 @@
         "typescript": "^3.5.2"
     },
     "scripts": {
-        "build": "rm -rf build && tsc",
-        "prepublish": "npm run build",
+        "prepare": "rm -rf build && tsc",
         "lint": "tslint -e 'node_modules/**' -p .",
         "test": "ts-mocha test/**/*.ts"
     }
