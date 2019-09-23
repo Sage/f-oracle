@@ -26,9 +26,9 @@ export function reader<T>(connection: Connection, sql: string, args?: any[], opt
                 rd = wait(connection.execute(sql, args || [], nopts));
             }
             if (!rd || !rd.resultSet) return undefined;
-            const row = wait(rd.resultSet.getRow() as Promise<T | undefined>);
+            const row = wait(rd.resultSet.getRow());
             if (!row) {
-                wait(rd.resultSet.close() as Promise<void>);
+                wait(rd.resultSet.close());
                 tracer && tracer('READER CLOSED: ' + --active);
                 rd = undefined;
                 return undefined;
@@ -39,7 +39,7 @@ export function reader<T>(connection: Connection, sql: string, args?: any[], opt
         () => {
             tracer && tracer('READER STOPPED: ' + active + ', alreadyStopped=' + stopped);
             stopped = true;
-            if (rd && rd.resultSet) wait(rd.resultSet.close() as Promise<void>);
+            if (rd && rd.resultSet) wait(rd.resultSet.close());
             tracer && tracer('READER CLOSED: ' + --active);
             rd = undefined;
         },
