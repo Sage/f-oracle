@@ -12,7 +12,7 @@ const { ok, deepEqual } = assert;
 const owait = <T>(p: IPromise<T>) => wait(p as Promise<T>);
 
 describe(module.id, () => {
-    var conn: IConnection;
+    let conn: IConnection;
 
     it('connect', function() {
         const config: IConnectionAttributes = require('./test-config');
@@ -34,12 +34,12 @@ describe(module.id, () => {
             {
                 C1: 4,
                 C2: 'Hello',
-                C3: new Buffer('0123456789abcdef', 'hex'),
+                C3: Buffer.from('0123456789abcdef', 'hex'),
             },
             {
                 C1: 7,
                 C2: 'World',
-                C3: new Buffer('aabbccddeeff0011', 'hex'),
+                C3: Buffer.from('aabbccddeeff0011', 'hex'),
             },
         ];
         arrayReader(data).pipe(wr);
