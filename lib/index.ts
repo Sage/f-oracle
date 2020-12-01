@@ -1,6 +1,6 @@
 import { wait } from 'f-promise';
 import { devices, Reader, Writer } from 'f-streams';
-import { CLOB, Connection, ExecuteOptions, Lob, OUT_FORMAT_OBJECT, Result } from 'oracledb';
+import { BindParameters, CLOB, Connection, ExecuteOptions, Lob, OUT_FORMAT_OBJECT, Result } from 'oracledb';
 
 /// !doc
 /// ## f-streams wrapper for oracle
@@ -58,11 +58,11 @@ export function writer<T>(connection: Connection, sql: string): Writer<T> {
         if (done) return;
         const values = Array.isArray(row)
             ? row
-            : Object.keys(row).map(function(key) {
+            : Object.keys(row).map(function (key) {
                   return (row as any)[key];
               });
         tracer && tracer('Writing values ' + JSON.stringify(values));
-        wait(connection.execute(sql, values, {}));
+        wait(connection.execute(sql, values as BindParameters, {}));
     });
 }
 

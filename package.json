@@ -1,19 +1,19 @@
 {
     "name": "f-oracle",
     "description": "f-streams for Oracle",
-    "version": "4.0.4",
+    "version": "5.0.0-0",
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "git://github.com/Sage/f-oracle.git"
     },
     "engines": {
-        "node": ">=8.0.0"
+        "node": ">=10.0.0"
     },
     "dependencies": {
         "f-promise": "^2.0.3",
         "f-streams": "^3.0.0",
-        "oracledb": "^4.0.0"
+        "oracledb": "^5.0.0"
     },
     "author": "Bruno Jouhier",
     "main": "build/index.js",
@@ -21,17 +21,17 @@
     "devDependencies": {
         "@types/chai": "^3.4.34",
         "@types/mocha": "^2.2.33",
-        "@types/oracledb": "^4.0.3",
+        "@types/oracledb": "^5.0.0",
         "chai": "^3.5.0",
         "f-mocha": "^2.0.0",
         "mocha": "^6.1.4",
         "ts-mocha": "^6.0.0",
         "tslint": "^5.18.0",
-        "typescript": "^3.5.2"
+        "typescript": "^4.1.2"
     },
     "scripts": {
         "prepare": "rm -rf build && tsc",
         "lint": "tslint -e 'node_modules/**' -p .",
-        "test": "ts-mocha test/**/*.ts"
+        "test": "ts-mocha --exit test/**/*.ts"
     }
 }

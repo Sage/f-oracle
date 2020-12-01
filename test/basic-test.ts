@@ -2,29 +2,26 @@ import { assert } from 'chai';
 import { setup } from 'f-mocha';
 import { wait } from 'f-promise';
 import { arrayReader } from 'f-streams';
-import { getConnection, IConnection, IConnectionAttributes, IPromise } from 'oracledb';
+import { getConnection, Connection, ConnectionAttributes } from 'oracledb';
 import { reader, writer } from '..';
 setup();
 
 const { ok, deepEqual } = assert;
 
-// deal with oracle's IPromise type
-const owait = <T>(p: IPromise<T>) => wait(p as Promise<T>);
-
 describe(module.id, () => {
-    let conn: IConnection;
+    let conn: Connection;
 
-    it('connect', function() {
-        const config: IConnectionAttributes = require('./test-config');
-        conn = owait(getConnection(config));
+    it('connect', function () {
+        const config: ConnectionAttributes = require('./test-config');
+        conn = wait(getConnection(config));
         try {
-            owait(conn.execute('DROP TABLE T1'));
+            wait(conn.execute('DROP TABLE T1'));
         } catch (ex) {}
-        owait(conn.execute('CREATE TABLE T1 (C1 NUMBER, C2 VARCHAR(10), C3 RAW(8))'));
+        wait(conn.execute('CREATE TABLE T1 (C1 NUMBER, C2 VARCHAR(10), C3 RAW(8))'));
         ok(true, 'connected and table created');
     });
 
-    it('roundtrip', function() {
+    it('roundtrip', function () {
         const wr = writer<{
             C1: number;
             C2: string;
